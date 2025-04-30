@@ -2,27 +2,24 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using VoiceShock.Config;
 
 namespace VoiceShock.Helpers;
 
-public class DatabaseHelper
+public static class DatabaseHelper
 {
-    private readonly string _connectionString;
+    private static string _connectionString = "";
+    public static string ConnectionString => _connectionString;
 
-    public DatabaseHelper(string databaseFilePath)
+    public static void Initialize(string databaseFilePath)
     {
         Directory.CreateDirectory(Path.GetDirectoryName(databaseFilePath)!);
         _connectionString = $"Data Source={databaseFilePath}";
-        InitializeDatabase();
-    }
 
-    private void InitializeDatabase()
-    {
         using var connection = new SqliteConnection(_connectionString);
         connection.Open();
 
         var cmd = connection.CreateCommand();
-
         cmd.CommandText = @"
             CREATE TABLE IF NOT EXISTS Words (
                 Id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -50,7 +47,7 @@ public class DatabaseHelper
         cmd.ExecuteNonQuery();
     }
 
-    public int AddWord(string text)
+    public static int AddWord(string text)
     {
         using var connection = new SqliteConnection(_connectionString);
         connection.Open();
@@ -61,7 +58,7 @@ public class DatabaseHelper
         return Convert.ToInt32(cmd.ExecuteScalar());
     }
 
-    public int AddShocker(string shockerId, bool enabled)
+    public static int AddShocker(string shockerId, bool enabled)
     {
         using var connection = new SqliteConnection(_connectionString);
         connection.Open();
@@ -73,7 +70,7 @@ public class DatabaseHelper
         return Convert.ToInt32(cmd.ExecuteScalar());
     }
 
-    public void LinkWordToShocker(int wordId, int shockerId, int duration, int intensity, int controlType, int warning)
+    public static void LinkWordToShocker(int wordId, int shockerId, int duration, int intensity, int controlType, int warning)
     {
         using var connection = new SqliteConnection(_connectionString);
         connection.Open();
@@ -93,7 +90,7 @@ public class DatabaseHelper
         cmd.ExecuteNonQuery();
     }
 
-    public List<(string ShockerID, bool Enabled, int Duration, int Intensity, int ControlType, int Warning)> GetShockersForWord(int wordId)
+    public static List<(string ShockerID, bool Enabled, int Duration, int Intensity, int ControlType, int Warning)> GetShockersForWord(int wordId)
     {
         var result = new List<(string, bool, int, int, int, int)>();
 
