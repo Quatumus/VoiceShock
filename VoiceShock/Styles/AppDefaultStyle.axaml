@@ -1,0 +1,29 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Design.PreviewWith>
+    <Border Padding="20" Background="{DynamicResource PrimaryBackgroundGradient}" Width="200">
+      <!-- Add Controls for Previewer Here -->
+		
+		<Button Content="Hello World!" />
+    </Border>
+  </Design.PreviewWith>
+
+  <!-- Add Styles Here -->
+
+	<Style Selector="Button">
+		<Setter Property="FontSize" Value="15"/>
+		<Setter Property="Foreground" Value="{DynamicResource PrimaryForeground}"/>
+		<Setter Property="Background" Value="{DynamicResource PrimaryTextBackground}"/>
+	</Style>
+
+
+
+	<Style Selector="Button:pointerover /template/ ContentPresenter">
+		<Setter Property="Foreground" Value="{DynamicResource PrimaryHoverForeground}"/>
+		<Setter Property="Background" Value="{DynamicResource PrimaryHoverBackground}"/>
+	</Style>
+  
+  <Style Selector="Button.active /template/ ContentPresenter">
+	  <Setter Property="Background" Value="{DynamicResource PrimaryActiveBackground}"/>
+  </Style>
+</Styles>

@@ -1,0 +1,31 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:VoiceShock"
+             x:Class="VoiceShock.App"
+             RequestedThemeVariant="Default">
+             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+    <Application.DataTemplates>
+        <local:ViewLocator/>
+    </Application.DataTemplates>
+
+    <Application.Styles>
+        <FluentTheme />
+        <StyleInclude Source="Styles/AppDefaultStyle.axaml" />
+    </Application.Styles>
+    
+    <Application.Resources>
+        <SolidColorBrush x:Key="PrimaryTextBackground">#1F1F1F</SolidColorBrush>
+        <SolidColorBrush x:Key="PrimaryForeground">#CFCFCF</SolidColorBrush>
+        <SolidColorBrush x:Key="PrimaryBackground">#242424</SolidColorBrush>
+        <LinearGradientBrush x:Key="PrimaryBackgroundGradient" StartPoint="0%, 0%" EndPoint="100%, 0%">
+            <GradientStop Offset="0" Color="#79132C" />
+            <GradientStop Offset="1" Color="#242424" />
+        </LinearGradientBrush>
+
+        <SolidColorBrush x:Key="PrimaryHoverBackground">#822434</SolidColorBrush>
+        <SolidColorBrush x:Key="PrimaryActiveBackground">#e14a6d</SolidColorBrush>
+        <SolidColorBrush x:Key="PrimaryHoverForeground">White</SolidColorBrush>
+    </Application.Resources>
+             
+</Application>

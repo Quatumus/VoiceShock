@@ -1,0 +1,39 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:VoiceShock.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:VoiceShock.Views"
+        mc:Ignorable="d" d:DesignWidth="1024" d:DesignHeight="600"
+        Width="1024" Height="600"
+        x:Class="VoiceShock.Views.MainView"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="VoiceShock"
+        x:DataType="vm:MainViewModel">
+        
+        <Design.DataContext>
+                <vm:MainViewModel />
+        </Design.DataContext>
+        
+        <Grid Background="{DynamicResource PrimaryBackground}" ColumnDefinitions="200, *">
+                
+                <ContentControl Grid.Column="1" Content="{Binding CurrentPage}" />
+                
+                <Border Padding="20" Background="{DynamicResource PrimaryBackgroundGradient}">
+                        <Grid RowDefinitions="*, Auto">
+                                <StackPanel Spacing="15">
+                                        <Image Source="{SvgImage /Assets/Images/logo.svg}"
+                                               Width="80"
+                                               Margin="0,0,0,20"
+                                               HorizontalAlignment="Left" />
+        
+                                        <Button HorizontalAlignment="Stretch" Content="Voice Recognition" Classes.active="{Binding VoiceRecognitionIsActive}" Command="{Binding ShowVoiceRecognitionViewCommand}"></Button>
+                                        <Button HorizontalAlignment="Stretch" Content="Configuration" Classes.active="{Binding ConfigurationIsActive}" Command="{Binding ShowConfigurationViewCommand}"></Button>
+                                </StackPanel>
+                                
+                                <Button Grid.Row="1" HorizontalAlignment="Stretch" Content="Account" Classes.active="{Binding AccountIsActive}" Command="{Binding ShowAccountViewCommand}"></Button>
+                        </Grid>
+                </Border>
+        </Grid>
+        
+</Window>
