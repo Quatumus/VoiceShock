@@ -4,7 +4,7 @@ using VoiceShock.Config;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace VoiceShock.Data
+namespace VoiceShock.Helpers
 {
     static class AccountHelper
     {
@@ -39,7 +39,7 @@ namespace VoiceShock.Data
             _hasBeenInitialized = true;
         }
 
-        public static async Task<AccountConfig?> LoadAsync()
+        public static async Task<bool> LoadAsync()
         {
             await Init();
             await using var connection = new SqliteConnection(Constants.DatabasePath);
@@ -51,22 +51,20 @@ namespace VoiceShock.Data
             await using var reader = await selectCmd.ExecuteReaderAsync();
             if (await reader.ReadAsync())
             {
-                return new AccountConfig
-                {
-                    Token = reader.GetString(0),
-                    Password = reader.GetString(1),
-                    Email = reader.GetString(2),
-                    Backend = new Uri(reader.GetString(3))
-                };
+                AccountConfig.Token = reader.GetString(0);
+                AccountConfig.Password = reader.GetString(1);
+                AccountConfig.Email = reader.GetString(2);
+                AccountConfig.Backend = new Uri(reader.GetString(3));
+                return true;
             }
             else
             {
-                return null;
+                return false;
             }
 
         }
 
-        public static async Task<int> SaveItemAsync(AccountConfig item)
+        public static async Task<int> SaveItemAsync()
         {
             await Init();
             await using var connection = new SqliteConnection(Constants.DatabasePath);
@@ -83,10 +81,10 @@ namespace VoiceShock.Data
             INSERT OR REPLACE INTO Account (Backend, Password, Email, Token)
             VALUES (@Backend, @Password, @Email, @Token);";
 
-            saveCmd.Parameters.AddWithValue("@Token", item.Token);
-            saveCmd.Parameters.AddWithValue("@Password", item.Password);
-            saveCmd.Parameters.AddWithValue("@Email", item.Email);
-            saveCmd.Parameters.AddWithValue("@Backend", item.Backend?.ToString());
+            saveCmd.Parameters.AddWithValue("@Token", AccountConfig.Token);
+            saveCmd.Parameters.AddWithValue("@Password", AccountConfig.Password);
+            saveCmd.Parameters.AddWithValue("@Email", AccountConfig.Email);
+            saveCmd.Parameters.AddWithValue("@Backend", AccountConfig.Backend?.ToString());
 
             return await saveCmd.ExecuteNonQueryAsync();
         }

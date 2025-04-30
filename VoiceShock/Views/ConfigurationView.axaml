@@ -5,11 +5,44 @@
              xmlns:vm="clr-namespace:VoiceShock.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              Foreground="White"
+             x:CompileBindings="True"
              x:DataType="vm:ConfigurationViewModel"
              x:Class="VoiceShock.Views.ConfigurationView">
     
     <Design.DataContext>
         <vm:ConfigurationViewModel />
     </Design.DataContext>
+    
+    <StackPanel Margin="10" Spacing="8">
+        <TextBox Watermark="New Word" Text="{Binding WordText}" />
+        <Button Content="Add Word" Command="{Binding AddWordCommand}" />
+
+        <TextBlock Text="Words:" FontWeight="Bold" />
+        <ItemsControl ItemsSource="{Binding Words}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <DockPanel>
+                        <TextBlock Text="{Binding Text}" DockPanel.Dock="Left" Margin="0,0,10,0"/>
+                        <Button Content="Edit"
+                                Command="{Binding DataContext.SelectWordCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                CommandParameter="{Binding Id}" />
+
+                    </DockPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <TextBlock Text="Add Shocker to Selected Word:" FontWeight="Bold" />
+        <TextBox Watermark="Shocker ID" Text="{Binding ShockerId}" />
+        <CheckBox Content="Enabled" IsChecked="{Binding ShockerEnabled}" />
+        <TextBox Watermark="Duration" Text="{Binding Duration}" />
+        <TextBox Watermark="Intensity" Text="{Binding Intensity}" />
+        <TextBox Watermark="Control Type" Text="{Binding ControlType}" />
+        <TextBox Watermark="Warning" Text="{Binding Warning}" />
+        <Button Content="Add Shocker" Command="{Binding AddShockerCommand}" />
+
+        <TextBlock Text="Shockers for selected word:" FontWeight="Bold" />
+        <ItemsControl ItemsSource="{Binding ShockerInfo}" />
+    </StackPanel>
     
 </UserControl>

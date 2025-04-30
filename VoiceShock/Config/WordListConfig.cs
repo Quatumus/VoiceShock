@@ -15,25 +15,25 @@ namespace VoiceShock.Config
     public class Word
     {
         public int Id { get; set; }
-        public string Text { get; set; }
-        public List<WordShocker> WordShockers { get; set; }
+        public required string Text { get; set; }
+        public required List<WordShocker> WordShockers { get; set; }
     }
 
     public class Shocker
     {
         public int Id { get; set; }
-        public string ShockerID { get; set; }
+        public required string ShockerID { get; set; }
         public bool Enabled { get; set; }
-        public List<WordShocker> WordShockers { get; set; }
+        public required List<WordShocker> WordShockers { get; set; }
     }
 
     public class WordShocker
     {
         public int WordId { get; set; }
-        public Word Word { get; set; }
+        public required Word Word { get; set; }
 
         public int ShockerId { get; set; }
-        public Shocker Shocker { get; set; }
+        public required Shocker Shocker { get; set; }
 
         public int Duration { get; set; }
         public int Intensity { get; set; }
