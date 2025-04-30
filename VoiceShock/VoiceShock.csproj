@@ -21,6 +21,7 @@
             <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
         </PackageReference>
         <PackageReference Include="CommunityToolkit.Mvvm"/>
+        <PackageReference Include="Microsoft.Data.Sqlite" />
         <PackageReference Include="OpenShock.SDK.CSharp" />
     </ItemGroup>
 </Project>
