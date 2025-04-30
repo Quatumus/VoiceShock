@@ -16,6 +16,7 @@
     <PackageVersion Include="Avalonia.Browser" Version="11.2.1" />
     <PackageVersion Include="Avalonia.Android" Version="11.2.1" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageVersion Include="Microsoft.Data.Sqlite" Version="9.0.4" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.4" />
     <PackageVersion Include="OpenShock.SDK.CSharp" Version="0.0.34" />
     <PackageVersion Include="Xamarin.AndroidX.Core.SplashScreen" Version="1.0.1.1" />
