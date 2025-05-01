@@ -1,37 +1,45 @@
-﻿using System;
+using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Threading.Tasks;
+using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.Data.Sqlite;
 using VoiceShock.Helpers;
+using VoiceShock.Views;
 
 namespace VoiceShock.ViewModels;
 
 public partial class ConfigurationViewModel : ViewModelBase
 {
-    [ObservableProperty] private string _wordText;
-    [ObservableProperty] private string _shockerId;
-    [ObservableProperty] private bool _shockerEnabled;
-    [ObservableProperty] private int _duration;
-    [ObservableProperty] private int _intensity;
-    [ObservableProperty] private int _controlType;
-    [ObservableProperty] private int _warning;
+    
+    [ObservableProperty]
+    private string _wordText = string.Empty;
+
+    public void AddItem()
+    {
+        if (!string.IsNullOrWhiteSpace(WordText))
+        {
+            var newWord = new WordEditViewModel(2, WordText);
+            Words.Add(newWord);
+            WordText = string.Empty; // Clear the input after adding
+        }
+    }
+
+    public void EditItem(WordEditViewModel word)
+    {
+        // Logic to edit the word, e.g., open a dialog or modify the text directly
+    }
 
     [ObservableProperty]
-    private ObservableCollection<WordEntry> _words = new();
-
-    [ObservableProperty]
-    private ObservableCollection<string> _shockerInfo = new();
-
-    private int _currentWordId = -1;
+    private ObservableCollection<WordEditViewModel> _words = new ();
 
     public ConfigurationViewModel()
     {
         var dbPath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            "VoiceShock",
-            "VoiceShockData.db3"
+            "VoiceShock", "VoiceShockData.db3"
         );
         DatabaseHelper.Initialize(dbPath);
         LoadWords();
@@ -43,59 +51,40 @@ public partial class ConfigurationViewModel : ViewModelBase
         if (!string.IsNullOrWhiteSpace(WordText))
         {
             DatabaseHelper.AddWord(WordText);
+            WordText = "";
             LoadWords();
         }
-    }
-
-    [RelayCommand]
-    private void SelectWord(int wordId)
-    {
-        _currentWordId = wordId;
-        LoadShockers();
-    }
-
-    [RelayCommand]
-    private void AddShocker()
-    {
-        if (_currentWordId < 0) return;
-
-        int sid = DatabaseHelper.AddShocker(ShockerId, ShockerEnabled);
-        DatabaseHelper.LinkWordToShocker(_currentWordId, sid, Duration, Intensity, ControlType, Warning);
-        LoadShockers();
     }
 
     private void LoadWords()
     {
         Words.Clear();
-        using var conn = new SqliteConnection(DatabaseHelper.ConnectionString);
-        conn.Open();
+        using var connection = new Microsoft.Data.Sqlite.SqliteConnection(DatabaseHelper.ConnectionString);
+        connection.Open();
 
-        var cmd = conn.CreateCommand();
+        var cmd = connection.CreateCommand();
         cmd.CommandText = "SELECT Id, Text FROM Words";
+
         using var reader = cmd.ExecuteReader();
         while (reader.Read())
         {
-            Words.Add(new WordEntry
-            {
-                Id = reader.GetInt32(0),
-                Text = reader.GetString(1)
-            });
+            Words.Add(new WordEditViewModel(reader.GetInt32(0), reader.GetString(1)));
         }
     }
 
-    private void LoadShockers()
+    [RelayCommand]
+    private async Task EditWord(WordEditViewModel word)
     {
-        ShockerInfo.Clear();
-        var shockers = DatabaseHelper.GetShockersForWord(_currentWordId);
-        foreach (var s in shockers)
+        var window = new WordEditView
         {
-            ShockerInfo.Add($"{s.ShockerID} - Enabled: {s.Enabled}, Intensity: {s.Intensity}, Duration: {s.Duration}");
-        }
-    }
+            DataContext = new WordEditViewModel(word.WordId, word.WordText)
+        };
 
-    public partial class WordEntry : ObservableObject
-    {
-        public int Id { get; set; }
-        public string Text { get; set; } = string.Empty;
+        if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            if (desktop.MainWindow != null) await window.ShowDialog(desktop.MainWindow);
+        }
+
+        LoadWords(); // Refresh list in case it changed
     }
 }

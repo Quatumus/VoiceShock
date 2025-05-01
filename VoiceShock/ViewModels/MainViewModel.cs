@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using VoiceShock.Views;
 
@@ -12,9 +12,9 @@ public partial class MainViewModel : ViewModelBase
     [NotifyPropertyChangedFor(nameof(ConfigurationIsActive))]
     private ViewModelBase _currentPage;
    
-    public bool VoiceRecognitionIsActive => CurrentPage == _voiceRecognitionView;
-    public bool AccountIsActive => CurrentPage == _accountView;
-    public bool ConfigurationIsActive => CurrentPage == _configurationView;
+    public bool VoiceRecognitionIsActive => CurrentPage is VoiceRecognitionViewModel;
+    public bool AccountIsActive => CurrentPage is AccountViewModel;
+    public bool ConfigurationIsActive => CurrentPage is ConfigurationViewModel;
     
     private readonly VoiceRecognitionViewModel _voiceRecognitionView = new ();
     private readonly AccountViewModel _accountView = new (); 

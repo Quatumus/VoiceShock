@@ -1,4 +1,4 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -9,40 +9,28 @@
              x:DataType="vm:ConfigurationViewModel"
              x:Class="VoiceShock.Views.ConfigurationView">
     
-    <Design.DataContext>
-        <vm:ConfigurationViewModel />
-    </Design.DataContext>
-    
-    <StackPanel Margin="10" Spacing="8">
-        <TextBox Watermark="New Word" Text="{Binding WordText}" />
-        <Button Content="Add Word" Command="{Binding AddWordCommand}" />
+    <StackPanel Margin="10" Spacing="5">
+        <TextBlock Text="Word Configuration" FontWeight="Bold" FontSize="18" />
 
-        <TextBlock Text="Words:" FontWeight="Bold" />
+        <StackPanel Orientation="Horizontal" Spacing="5">
+            <TextBox Watermark="Enter Word" Width="200" Text="{Binding WordText}" />
+            <Button Content="Add" Command="{Binding AddWordCommand}" />
+        </StackPanel>
+
         <ItemsControl ItemsSource="{Binding Words}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <DockPanel>
-                        <TextBlock Text="{Binding Text}" DockPanel.Dock="Left" Margin="0,0,10,0"/>
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <TextBlock Text="{Binding WordText}" VerticalAlignment="Center" />
                         <Button Content="Edit"
-                                Command="{Binding DataContext.SelectWordCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                CommandParameter="{Binding Id}" />
-
-                    </DockPanel>
+                                Command="{Binding EditWordCommand}"
+                                CommandParameter="{Binding}" />
+                    </StackPanel>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-
-        <TextBlock Text="Add Shocker to Selected Word:" FontWeight="Bold" />
-        <TextBox Watermark="Shocker ID" Text="{Binding ShockerId}" />
-        <CheckBox Content="Enabled" IsChecked="{Binding ShockerEnabled}" />
-        <TextBox Watermark="Duration" Text="{Binding Duration}" />
-        <TextBox Watermark="Intensity" Text="{Binding Intensity}" />
-        <TextBox Watermark="Control Type" Text="{Binding ControlType}" />
-        <TextBox Watermark="Warning" Text="{Binding Warning}" />
-        <Button Content="Add Shocker" Command="{Binding AddShockerCommand}" />
-
-        <TextBlock Text="Shockers for selected word:" FontWeight="Bold" />
-        <ItemsControl ItemsSource="{Binding ShockerInfo}" />
     </StackPanel>
-    
+    <UserControl.DataContext>
+        <vm:ConfigurationViewModel />
+    </UserControl.DataContext>
 </UserControl>
