@@ -1,19 +1,28 @@
-﻿<Window xmlns="https://github.com/avaloniaui"
+<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:VoiceShock.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:viewModels="clr-namespace:VoiceShock.ViewModels"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="VoiceShock.Views.WordEditView"
-        Title="WordEditView"
-        Width="400" Height="300"
-        WindowStartupLocation="CenterOwner"
-        SystemDecorations="Full"
-        x:DataType="viewModels:WordEditViewModel">
-    
-    <StackPanel Margin="10" Spacing="5">
-        <TextBlock Text="{Binding WordText}" FontWeight="Bold" FontSize="16" />
-        <ItemsControl ItemsSource="{Binding Shockers}" />
-        <Button Content="Close" HorizontalAlignment="Right" Click="OnClose"/>
-    </StackPanel>
+        xmlns:views="clr-namespace:VoiceShock.Views"
+        xmlns:voiceShock="clr-namespace:VoiceShock"
+        mc:Ignorable="d" d:DesignWidth="1024" d:DesignHeight="600"
+        Width="1024" Height="600"
+        x:Class="VoiceShock.Views.WordEdit"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="VoiceShock"
+        x:DataType="voiceShock:WordEditModel">
+        
+        <Design.DataContext>
+                <voiceShock:WordEditModel />
+        </Design.DataContext>
+        
+        <Grid Background="{DynamicResource PrimaryBackground}" ColumnDefinitions="200, *">
+                
+                <Border Padding="20" Background="{DynamicResource PrimaryBackgroundGradient}">
+                        <Grid RowDefinitions="*, Auto">
+                                
+                        </Grid>
+                </Border>
+        </Grid>
+        
 </Window>

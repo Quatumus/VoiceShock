@@ -1,16 +1,15 @@
-﻿using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
+using VoiceShock.Helpers;
 
 namespace VoiceShock.Views;
 
-public partial class WordEditView : Window
+public partial class WordEdit : Window
 {
-    public WordEditView()
+    public WordEdit()
     {
-        //InitializeComponent();
-    }
+        InitializeComponent();
 
-    private void OnClose(object? sender, RoutedEventArgs e) => Close();
+        _ = AccountHelper.LoadAsync();
+        
+    }
 }

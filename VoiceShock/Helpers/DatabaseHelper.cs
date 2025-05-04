@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using OpenShock.SDK.CSharp.Models;
 using VoiceShock.Config;
 
 namespace VoiceShock.Helpers;
@@ -27,8 +28,7 @@ public static class DatabaseHelper
             );
 
             CREATE TABLE IF NOT EXISTS Shockers (
-                Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                ShockerID TEXT NOT NULL,
+                Id TEXT PRIMARY KEY,
                 Enabled BOOLEAN NOT NULL
             );
 
@@ -39,6 +39,7 @@ public static class DatabaseHelper
                 Intensity INTEGER NOT NULL,
                 ControlType INTEGER NOT NULL,
                 Warning INTEGER NOT NULL,
+                Enabled INTEGER NOT NULL,
                 PRIMARY KEY (WordId, ShockerId),
                 FOREIGN KEY (WordId) REFERENCES Words(Id) ON DELETE CASCADE,
                 FOREIGN KEY (ShockerId) REFERENCES Shockers(Id) ON DELETE CASCADE
@@ -70,7 +71,7 @@ public static class DatabaseHelper
         return Convert.ToInt32(cmd.ExecuteScalar());
     }
 
-    public static void LinkWordToShocker(int wordId, int shockerId, int duration, int intensity, int controlType, int warning)
+    public static void LinkWordToShocker(int wordId, string shockerId, int duration, int intensity, ControlType controlType, ControlType warning, int enabled)
     {
         using var connection = new SqliteConnection(_connectionString);
         connection.Open();
@@ -78,28 +79,29 @@ public static class DatabaseHelper
         var cmd = connection.CreateCommand();
         cmd.CommandText = @"
             INSERT OR REPLACE INTO WordShockers 
-            (WordId, ShockerId, Duration, Intensity, ControlType, Warning) 
-            VALUES ($wordId, $shockerId, $duration, $intensity, $controlType, $warning);
+            (WordId, ShockerId, Duration, Intensity, ControlType, Warning, Enabled) 
+            VALUES ($wordId, $shockerId, $duration, $intensity, $controlType, $warning, $enabled);
         ";
         cmd.Parameters.AddWithValue("$wordId", wordId);
         cmd.Parameters.AddWithValue("$shockerId", shockerId);
         cmd.Parameters.AddWithValue("$duration", duration);
         cmd.Parameters.AddWithValue("$intensity", intensity);
-        cmd.Parameters.AddWithValue("$controlType", controlType);
-        cmd.Parameters.AddWithValue("$warning", warning);
+        cmd.Parameters.AddWithValue("$controlType", (int)controlType);
+        cmd.Parameters.AddWithValue("$warning", (int)warning);
+        cmd.Parameters.AddWithValue("$enabled", enabled);
         cmd.ExecuteNonQuery();
     }
 
-    public static List<(string ShockerID, bool Enabled, int Duration, int Intensity, int ControlType, int Warning)> GetShockersForWord(int wordId)
+    public static List<(string ShockerID, bool Paused, int Duration, int Intensity, ControlType ControlType, ControlType Warning, bool Enabled)> GetShockersForWord(int wordId)
     {
-        var result = new List<(string, bool, int, int, int, int)>();
+        var result = new List<(string, bool, int, int, ControlType, ControlType, bool)>();
 
         using var connection = new SqliteConnection(_connectionString);
         connection.Open();
 
         var cmd = connection.CreateCommand();
         cmd.CommandText = @"
-            SELECT s.ShockerID, s.Enabled, ws.Duration, ws.Intensity, ws.ControlType, ws.Warning
+            SELECT s.ShockerID, s.Enabled, ws.Duration, ws.Intensity, ws.ControlType, ws.Warning, ws.Enabled
             FROM WordShockers ws
             JOIN Shockers s ON ws.ShockerId = s.Id
             WHERE ws.WordId = $wordId;
@@ -114,8 +116,9 @@ public static class DatabaseHelper
                 reader.GetBoolean(1),
                 reader.GetInt32(2),
                 reader.GetInt32(3),
-                reader.GetInt32(4),
-                reader.GetInt32(5)
+                (ControlType)reader.GetInt32(4),
+                (ControlType)reader.GetInt32(5),
+                reader.GetBoolean(6)
             ));
         }
 

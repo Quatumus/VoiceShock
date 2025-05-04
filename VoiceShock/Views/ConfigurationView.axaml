@@ -23,8 +23,13 @@
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <TextBlock Text="{Binding WordText}" VerticalAlignment="Center" />
                         <Button Content="Edit"
-                                Command="{Binding EditWordCommand}"
+                                
                                 CommandParameter="{Binding}" />
+                        <!--
+                        <Button Content="Edit"
+                                Command="{Binding DataContext.EditItemCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                CommandParameter="{Binding}" />
+                        -->
                     </StackPanel>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

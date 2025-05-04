@@ -34,6 +34,13 @@
                                 <Button Grid.Row="1" HorizontalAlignment="Stretch" Content="Account" Classes.active="{Binding AccountIsActive}" Command="{Binding ShowAccountViewCommand}"></Button>
                         </Grid>
                 </Border>
+                
+                <Grid Grid.Column="0" Grid.ColumnSpan="2" IsVisible="{Binding Dialog.IsDialogOpen}">
+                        <Border Background="Black" Opacity="0.3"/>
+                        <ContentControl Content="{Binding Dialog}"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"/>
+                </Grid>
         </Grid>
         
 </Window>

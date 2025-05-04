@@ -7,8 +7,8 @@
              x:DataType="vm:VoiceRecognitionViewModel"
              x:Class="VoiceShock.Views.VoiceRecognitionView">
     
-    <Design.DataContext>
+    <UserControl.DataContext>
         <vm:VoiceRecognitionViewModel />
-    </Design.DataContext>
+    </UserControl.DataContext>
     
 </UserControl>

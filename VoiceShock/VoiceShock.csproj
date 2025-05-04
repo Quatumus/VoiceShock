@@ -24,4 +24,11 @@
         <PackageReference Include="Microsoft.Data.Sqlite" />
         <PackageReference Include="OpenShock.SDK.CSharp" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Views\WordEditView.axaml.cs">
+        <DependentUpon>WordEditView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+    </ItemGroup>
 </Project>

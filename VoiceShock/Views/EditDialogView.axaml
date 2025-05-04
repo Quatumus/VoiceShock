@@ -1,0 +1,112 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:VoiceShock.ViewModels"
+             x:DataType="vm:EditDialogViewModel"
+             Foreground="{DynamicResource PrimaryForeground}"
+             Background="Transparent"
+             mc:Ignorable="d"
+             MinWidth="600"
+             MinHeight="400"
+             x:Class="VoiceShock.Views.EditDialogView">
+    
+    <Design.DataContext>
+        <vm:EditDialogViewModel></vm:EditDialogViewModel>
+    </Design.DataContext>
+    
+    <!-- Main Dialog Window -->
+    <Border Background="{DynamicResource PrimaryBackground}"
+            BorderBrush="{DynamicResource DefaultGradient}"
+            BorderThickness="2"
+            CornerRadius="20"
+            ClipToBounds="True"
+            Margin="10">
+        
+        <Border.Effect>
+            <DropShadowEffect Color="{DynamicResource PrimaryBackgroundColor1}"/>
+        </Border.Effect>
+        
+        <StackPanel>
+            
+            <!-- Title -->
+            <Border Background="{DynamicResource PrimaryBackgroundGradient}" CornerRadius="20,20,0,0">
+                <TextBlock Text="{Binding Title}"
+                           Padding="10"
+                           FontSize="18"
+                           FontFamily="Bold"/>
+            </Border>
+            
+            <!-- Description -->
+            <Border Padding="20">
+                <StackPanel Spacing="6">
+                    <TextBlock TextWrapping="Wrap" Text="{Binding Message}"></TextBlock>
+                    <ComboBox MaxDropDownHeight="200" ItemsSource="{Binding ShockerList}"></ComboBox>
+                    
+                    <StackPanel>
+                        <TextBlock Text="Intensity"/>
+                        <Slider Maximum="100" Minimum="0" Value="{Binding Intensity}"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Intensity}"/>
+                            <TextBlock Text=" %"></TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                    
+                    <StackPanel>
+                        <TextBlock Text="Duration"/>
+                        <Slider Maximum="30000" Minimum="300" Value="{Binding Duration}"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Duration}"/>
+                            <TextBlock Text=" ms"></TextBlock>
+                        </StackPanel>
+                        
+                    </StackPanel>
+                    
+                    <Grid ColumnDefinitions="*, Auto">
+                        <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="20">
+                            <StackPanel>
+                                <TextBlock Text="Response" HorizontalAlignment="Center"/>
+                                <ComboBox SelectedIndex="{Binding Mode}" HorizontalAlignment="Center">
+                                    <ComboBoxItem>Shock</ComboBoxItem>
+                                    <ComboBoxItem>Vibrate</ComboBoxItem>
+                                    <ComboBoxItem>Sound</ComboBoxItem>
+                                </ComboBox>
+                            </StackPanel>
+                            
+                            <StackPanel>
+                                <TextBlock Text="Warning" HorizontalAlignment="Center"/>
+                                <ComboBox SelectedIndex="{Binding Warning}" HorizontalAlignment="Center">
+                                    <ComboBoxItem>None</ComboBoxItem>
+                                    <ComboBoxItem>Vibrate</ComboBoxItem>
+                                    <ComboBoxItem>Sound</ComboBoxItem>
+                                </ComboBox>
+                            </StackPanel>
+                            
+                            <StackPanel>
+                                <TextBlock Text="Enabled" HorizontalAlignment="Center"/>
+                                <CheckBox IsEnabled="{Binding Enabled}" HorizontalAlignment="Center"></CheckBox>
+                            </StackPanel>
+                        </StackPanel>
+                    
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="10">
+                            <Button MinWidth="100" MinHeight="40" Command="{Binding CancelCommand}">
+                                <TextBlock Text="Discard"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
+                            </Button>
+                            
+                            <Button MinWidth="100" MinHeight="40" Command="{Binding ConfirmCommand}">
+                                <TextBlock Text="Save"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                    
+                </StackPanel>
+            </Border>
+            
+        </StackPanel>
+    </Border>
+    
+</UserControl>

@@ -27,7 +27,8 @@ public partial class ConfigurationViewModel : ViewModelBase
         }
     }
 
-    public void EditItem(WordEditViewModel word)
+    [RelayCommand]
+    private void EditItem(WordEditViewModel word)
     {
         // Logic to edit the word, e.g., open a dialog or modify the text directly
     }
@@ -70,21 +71,5 @@ public partial class ConfigurationViewModel : ViewModelBase
         {
             Words.Add(new WordEditViewModel(reader.GetInt32(0), reader.GetString(1)));
         }
-    }
-
-    [RelayCommand]
-    private async Task EditWord(WordEditViewModel word)
-    {
-        var window = new WordEditView
-        {
-            DataContext = new WordEditViewModel(word.WordId, word.WordText)
-        };
-
-        if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-        {
-            if (desktop.MainWindow != null) await window.ShowDialog(desktop.MainWindow);
-        }
-
-        LoadWords(); // Refresh list in case it changed
     }
 }

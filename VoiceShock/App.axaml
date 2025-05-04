@@ -18,9 +18,18 @@
         <SolidColorBrush x:Key="PrimaryTextBackground">#1F1F1F</SolidColorBrush>
         <SolidColorBrush x:Key="PrimaryForeground">#CFCFCF</SolidColorBrush>
         <SolidColorBrush x:Key="PrimaryBackground">#242424</SolidColorBrush>
+        
+        <Color x:Key="PrimaryBackgroundColor1">#79132C</Color>
+        <Color x:Key="PrimaryBackgroundColor2">#242424</Color>
+        
         <LinearGradientBrush x:Key="PrimaryBackgroundGradient" StartPoint="0%, 0%" EndPoint="100%, 0%">
             <GradientStop Offset="0" Color="#79132C" />
             <GradientStop Offset="1" Color="#242424" />
+        </LinearGradientBrush>
+        
+        <LinearGradientBrush x:Key="DefaultGradient" StartPoint="0%, 0%" EndPoint="100%, 0%">
+            <GradientStop Offset="0" Color="#941232" />
+            <GradientStop Offset="1" Color="#941232" />
         </LinearGradientBrush>
 
         <SolidColorBrush x:Key="PrimaryHoverBackground">#822434</SolidColorBrush>

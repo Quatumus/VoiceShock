@@ -11,6 +11,8 @@ public partial class MainViewModel : ViewModelBase
     [NotifyPropertyChangedFor(nameof(AccountIsActive))]
     [NotifyPropertyChangedFor(nameof(ConfigurationIsActive))]
     private ViewModelBase _currentPage;
+
+    [ObservableProperty] private DialogViewModel _dialog;
    
     public bool VoiceRecognitionIsActive => CurrentPage is VoiceRecognitionViewModel;
     public bool AccountIsActive => CurrentPage is AccountViewModel;

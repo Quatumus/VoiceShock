@@ -1,14 +1,7 @@
 ﻿using System.Collections.Generic;
 using VoiceShock.Config;
 using System.ComponentModel;
-
-public enum ControlType
-{
-    Stop = 0,
-    Shock = 1,
-    Vibrate = 2,
-    Sound = 3
-}
+using OpenShock.SDK.CSharp.Models;
 
 namespace VoiceShock.Config
 {
@@ -21,8 +14,7 @@ namespace VoiceShock.Config
 
     public class Shocker
     {
-        public int Id { get; set; }
-        public required string ShockerID { get; set; }
+        public required string Id { get; set; }
         public bool Enabled { get; set; }
         public required List<WordShocker> WordShockers { get; set; }
     }
@@ -39,6 +31,7 @@ namespace VoiceShock.Config
         public int Intensity { get; set; }
         public ControlType ControlType { get; set; }
         public ControlType Warning { get; set; }
+        public bool Enabled { get; set; }
     }
 
 }
