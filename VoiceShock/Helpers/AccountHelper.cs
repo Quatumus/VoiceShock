@@ -3,12 +3,15 @@ using Microsoft.Data.Sqlite;
 using VoiceShock.Config;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using OpenShock.SDK.CSharp;
 
 namespace VoiceShock.Helpers
 {
     static class AccountHelper
     {
         private static bool _hasBeenInitialized = false;
+
+        public static OpenShockApiClient? client;
 
         private static async Task Init()
         {
@@ -35,6 +38,21 @@ namespace VoiceShock.Helpers
                 Debug.Print(e.Message);
                 throw;
             }
+            
+            ApiClientOptions.ProgramInfo programInfo = new ApiClientOptions.ProgramInfo
+            {
+                Name = "VoiceShock",
+                Version = new Version("0.1")
+            };
+        
+            ApiClientOptions apiOptions = new ApiClientOptions
+            {
+                Server = AccountConfig.Backend,
+                Token = AccountConfig.Token != null ? AccountConfig.Token : "",
+                Program = programInfo
+            };
+        
+            client = new OpenShockApiClient(apiOptions);
 
             _hasBeenInitialized = true;
         }

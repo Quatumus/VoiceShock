@@ -6,12 +6,13 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using VoiceShock.Data;
 using VoiceShock.Helpers;
 using VoiceShock.Views;
 
 namespace VoiceShock.ViewModels;
 
-public partial class ConfigurationViewModel : ViewModelBase
+public partial class ConfigurationViewModel() : PageViewModel(ApplicationPageNames.Configuration)
 {
     
     [ObservableProperty]
@@ -21,21 +22,16 @@ public partial class ConfigurationViewModel : ViewModelBase
     {
         if (!string.IsNullOrWhiteSpace(WordText))
         {
-            var newWord = new WordEditViewModel(2, WordText);
+            var newWord = new EditDialogViewModel(2, WordText);
             Words.Add(newWord);
             WordText = string.Empty; // Clear the input after adding
         }
     }
 
-    [RelayCommand]
-    private void EditItem(WordEditViewModel word)
-    {
-        // Logic to edit the word, e.g., open a dialog or modify the text directly
-    }
-
     [ObservableProperty]
-    private ObservableCollection<WordEditViewModel> _words = new ();
+    private ObservableCollection<EditDialogViewModel> _words = new ();
 
+    /*
     public ConfigurationViewModel()
     {
         var dbPath = Path.Combine(
@@ -44,7 +40,7 @@ public partial class ConfigurationViewModel : ViewModelBase
         );
         DatabaseHelper.Initialize(dbPath);
         LoadWords();
-    }
+    }*/
 
     [RelayCommand]
     private void AddWord()
@@ -69,7 +65,7 @@ public partial class ConfigurationViewModel : ViewModelBase
         using var reader = cmd.ExecuteReader();
         while (reader.Read())
         {
-            Words.Add(new WordEditViewModel(reader.GetInt32(0), reader.GetString(1)));
+            Words.Add(new EditDialogViewModel(reader.GetInt32(0), reader.GetString(1)));
         }
     }
 }

@@ -23,19 +23,11 @@
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <TextBlock Text="{Binding WordText}" VerticalAlignment="Center" />
                         <Button Content="Edit"
-                                
-                                CommandParameter="{Binding}" />
-                        <!--
-                        <Button Content="Edit"
-                                Command="{Binding DataContext.EditItemCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                CommandParameter="{Binding}" />
-                        -->
+                                Command="{Binding LoadItemCommand}"/>
                     </StackPanel>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
     </StackPanel>
-    <UserControl.DataContext>
-        <vm:ConfigurationViewModel />
-    </UserControl.DataContext>
+    
 </UserControl>

@@ -12,13 +12,24 @@
         <vm:AccountViewModel />
     </Design.DataContext>
     
-    <StackPanel Spacing="20" Width="" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="{Binding IsLoggedIn}">
-        <TextBox Width="200" HorizontalAlignment="Left" VerticalAlignment="Center" Watermark="Email"/>
-        <TextBox Width="200" HorizontalAlignment="Left" VerticalAlignment="Center" Watermark="Password" PasswordChar="*"/>
-        <Button Content="                 Login" HorizontalAlignment="Stretch" Command="{Binding LoginCommand}"/>
-        <TextBox Width="200" HorizontalAlignment="Left" VerticalAlignment="Center" Watermark="Token"/>
-        <Button Content="        Login with token" HorizontalAlignment="Stretch" Command="{Binding LoginCommand}"/>
-        <TextBox Width="200" HorizontalAlignment="Left" VerticalAlignment="Center" Watermark="https://api.openshock.app"/>
-    </StackPanel>
+    <UserControl.Resources>
+        <DataTemplate x:Key="Login" x:DataType="vm:AccountViewModel">
+            <StackPanel Spacing="20" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBox Width="200" HorizontalAlignment="Left" VerticalAlignment="Center" Watermark="Email"/>
+                <TextBox Width="200" HorizontalAlignment="Left" VerticalAlignment="Center" Watermark="Password" PasswordChar="*"/>
+                <Button Content="                 Login" HorizontalAlignment="Stretch" Command="{Binding LoginCommand}"/>
+                <TextBox Width="200" HorizontalAlignment="Left" VerticalAlignment="Center" Watermark="Token"/>
+                <Button Content="        Login with token" HorizontalAlignment="Stretch" Command="{Binding LoginCommand}"/>
+                <TextBox Width="200" HorizontalAlignment="Left" VerticalAlignment="Center" Watermark="https://api.openshock.app"/>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="Logout" x:DataType="vm:AccountViewModel">
+            <StackPanel Spacing="20" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Button Content="                Logout" HorizontalAlignment="Stretch" Command="{Binding LogoutCommand}"/>
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.Resources>
     
+    <ContentControl Content="{Binding}"
+                   ContentTemplate="{DynamicResource {Binding CurrentPanel}}"/>
 </UserControl>

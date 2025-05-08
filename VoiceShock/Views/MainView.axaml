@@ -35,7 +35,7 @@
                         </Grid>
                 </Border>
                 
-                <Grid Grid.Column="0" Grid.ColumnSpan="2" IsVisible="{Binding Dialog.IsDialogOpen}">
+                <Grid Grid.Column="0" Grid.ColumnSpan="2" IsVisible="{Binding Dialog.IsDialogOpen, FallbackValue=false}">
                         <Border Background="Black" Opacity="0.3"/>
                         <ContentControl Content="{Binding Dialog}"
                                         HorizontalAlignment="Center"
