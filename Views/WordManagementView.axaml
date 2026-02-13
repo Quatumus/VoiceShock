@@ -1,0 +1,47 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:VoiceShock.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="VoiceShock.Views.WordManagementView"
+             x:DataType="vm:WordManagementViewModel">
+    <Grid RowDefinitions="Auto, *">
+        <!-- Add Word Form -->
+        <Border Grid.Row="0" Margin="10" Padding="10" Background="{DynamicResource AppForegroundBrush}" CornerRadius="5">
+            <StackPanel Spacing="10">
+                <TextBlock Text="Add New Word" FontWeight="Bold" FontSize="16"/>
+                <Grid ColumnDefinitions="*, Auto, Auto, Auto, Auto">
+                    <TextBox Grid.Column="0" Text="{Binding NewWordText}" Watermark="Word/Phrase" Margin="0,0,5,0"/>
+                    <NumericUpDown Grid.Column="1" Value="{Binding NewWordDuration}" Minimum="0" Maximum="30000" Increment="100" Watermark="Duration" Margin="0,0,5,0" Width="140"/>
+                    <NumericUpDown Grid.Column="2" Value="{Binding NewWordIntensity}" Minimum="0" Maximum="100" Watermark="Intensity" Margin="0,0,5,0" Width="130"/>
+                    <Button Grid.Column="3" Content="Add" Command="{Binding AddWordCommand}" Classes="accent"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+
+        <!-- Words List -->
+        <ListBox Grid.Row="1" ItemsSource="{Binding Words}" Margin="10">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid ColumnDefinitions="Auto, *, Auto, Auto, Auto">
+                        <CheckBox Grid.Column="0" IsChecked="{Binding Enabled}" Margin="0,0,10,0"/>
+                        <TextBlock Grid.Column="1" Text="{Binding Text}" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                        <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0">
+                            <TextBlock Text="Dur: " Foreground="Gray"/>
+                            <TextBlock Text="{Binding Duration}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0">
+                            <TextBlock Text="Int: " Foreground="Gray"/>
+                            <TextBlock Text="{Binding Intensity}"/>
+                        </StackPanel>
+                        <Button Grid.Column="4" Content="Remove" 
+                                Command="{Binding $parent[ListBox].((vm:WordManagementViewModel)DataContext).RemoveWordCommand}"
+                                CommandParameter="{Binding}"
+                                Foreground="Red"/>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</UserControl>

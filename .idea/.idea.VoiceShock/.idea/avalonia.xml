@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AvaloniaProject">
+    <option name="projectPerEditor">
+      <map>
+        <entry key="App.axaml" value="VoiceShock.csproj" />
+        <entry key="Views/ControlPanelView.axaml" value="VoiceShock.csproj" />
+        <entry key="Views/LoginView.axaml" value="VoiceShock.csproj" />
+        <entry key="Views/MainWindow.axaml" value="VoiceShock.csproj" />
+        <entry key="Views/ShockersView.axaml" value="VoiceShock.csproj" />
+        <entry key="Views/WordManagementView.axaml" value="VoiceShock.csproj" />
+      </map>
+    </option>
+  </component>
+</project>

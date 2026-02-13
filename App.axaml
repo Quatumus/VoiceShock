@@ -1,0 +1,36 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="VoiceShock.App"
+             xmlns:local="using:VoiceShock"
+             xmlns:conv="using:VoiceShock.Converters"
+             RequestedThemeVariant="Dark">
+             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+    <Application.DataTemplates>
+        <local:ViewLocator/>
+    </Application.DataTemplates>
+  
+    <Application.Styles>
+        <FluentTheme>
+            <FluentTheme.Palettes>
+                <ColorPaletteResources x:Key="Dark" 
+                                       Accent="#e14a6d" 
+                                       RegionColor="#1b1d1e" 
+                                       ErrorText="#e14a6d" />
+            </FluentTheme.Palettes>
+        </FluentTheme>
+    </Application.Styles>
+    
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary.MergedDictionaries>
+            <SolidColorBrush x:Key="AppBackgroundBrush" Color="#1b1d1e" />
+            <SolidColorBrush x:Key="AppForegroundBrush" Color="#202325" />
+            <SolidColorBrush x:Key="AppHighlightBrush" Color="#e14a6d" />
+            <conv:TranscriptionButtonConverter x:Key="TranscriptionButtonConverter" />
+            <conv:BooleanToStatusConverter x:Key="BooleanToStatusConverter" />
+            <conv:BooleanToToggleTextConverter x:Key="BooleanToToggleTextConverter" />
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

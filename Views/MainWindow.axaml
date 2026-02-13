@@ -1,0 +1,52 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:VoiceShock.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="VoiceShock.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="VoiceShock"
+        MinWidth="800"
+        MinHeight="650">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <SplitView IsPaneOpen="True"
+               DisplayMode="CompactInline"
+               OpenPaneLength="200"
+               CompactPaneLength="50"
+               Background="{DynamicResource AppBackgroundBrush}"
+               PaneBackground="{DynamicResource AppForegroundBrush}">
+        <SplitView.Pane>
+            <StackPanel Spacing="5" Margin="5">
+                <Button Command="{Binding NavigateToLoginCommand}"
+                        HorizontalAlignment="Stretch"
+                        IsVisible="{Binding !IsLoggedIn}"
+                        Content="Login"/>
+                <Button Command="{Binding NavigateToAccountCommand}"
+                        HorizontalAlignment="Stretch"
+                        IsVisible="{Binding IsLoggedIn}"
+                        Content="Account"/>
+                <Button Command="{Binding NavigateToControlPanelCommand}"
+                        HorizontalAlignment="Stretch"
+                        Content="Control Panel"/>
+                <Button Command="{Binding NavigateToWordsCommand}"
+                        HorizontalAlignment="Stretch"
+                        Content="Words"/>
+                <Button Command="{Binding NavigateToShockersCommand}"
+                        HorizontalAlignment="Stretch"
+                        Content="Shockers"/>
+            </StackPanel>
+        </SplitView.Pane>
+        <SplitView.Content>
+            <TransitioningContentControl Content="{Binding CurrentPage}" />
+        </SplitView.Content>
+    </SplitView>
+
+</Window>
