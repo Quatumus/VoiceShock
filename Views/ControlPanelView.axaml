@@ -1,0 +1,117 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:VoiceShock.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="VoiceShock.Views.ControlPanelView"
+             x:DataType="vm:ControlPanelViewModel">
+    <Grid RowDefinitions="Auto, Auto, *">
+        <Grid Grid.Row="0" Margin="20" ColumnDefinitions="*, *" RowDefinitions="Auto, Auto">
+            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" 
+                       Text="Control Panel" FontSize="24" FontWeight="Bold" Margin="0,0,0,20"/>
+            
+            <StackPanel Grid.Row="1" Grid.Column="0" Spacing="10" Margin="0,0,10,0">
+                <TextBlock Text="Select Microphone:"/>
+                <ComboBox HorizontalAlignment="Stretch"
+                          ItemsSource="{Binding Devices}"
+                          SelectedItem="{Binding SelectedDevice}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                
+                <TextBlock Text="Select Language:" 
+                          IsVisible="{Binding ShowLanguageSelection}"
+                          Margin="0,10,0,0"/>
+                <ComboBox HorizontalAlignment="Stretch"
+                          ItemsSource="{Binding Languages}"
+                          SelectedItem="{Binding SelectedLanguage}"
+                          IsVisible="{Binding ShowLanguageSelection}">
+                </ComboBox>
+                
+                <TextBlock Text="Select GPU Acceleration:" 
+                          Margin="0,10,0,0"/>
+                <ComboBox HorizontalAlignment="Stretch"
+                          ItemsSource="{Binding GpuOptions}"
+                          SelectedItem="{Binding SelectedGpuOption}">
+                </ComboBox>
+                
+                <TextBlock Text="Select GPU Device:" 
+                          IsVisible="{Binding ShowGpuDeviceSelection}"
+                          Margin="0,10,0,0"/>
+                <ComboBox HorizontalAlignment="Stretch"
+                          ItemsSource="{Binding GpuDevices}"
+                          SelectedItem="{Binding SelectedGpuDevice}"
+                          IsVisible="{Binding ShowGpuDeviceSelection}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" Spacing="5">
+                                <TextBlock Text="{Binding Name}" />
+                                <TextBlock Text="{Binding Type}" 
+                                           FontSize="12" 
+                                           Foreground="Gray"
+                                           VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding Vendor}" 
+                                           FontSize="12" 
+                                           Foreground="Gray"
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                
+                <Button Content="{Binding IsTranscribing, Converter={StaticResource TranscriptionButtonConverter}}"
+                        Command="{Binding ToggleTranscriptionCommand}"
+                        Classes.accent="{Binding !IsTranscribing}"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Center"
+                        Margin="0,10,0,0"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Grid.Column="1" Spacing="10" Margin="10,0,0,0">
+                <TextBlock Text="Select Whisper Model:"/>
+                <ListBox ItemsSource="{Binding Models}"
+                         SelectedItem="{Binding SelectedModel}"
+                         Height="100">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <TextBlock Text="{Binding Name}"/>
+                                <TextBlock Text="(Installed)" 
+                                           IsVisible="{Binding IsInstalled}"
+                                           Foreground="Green"
+                                           FontSize="12"
+                                           VerticalAlignment="Center"/>
+                                <TextBlock Text="(Not Installed)" 
+                                           IsVisible="{Binding !IsInstalled}"
+                                           Foreground="Gray"
+                                           FontSize="12"
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <Button Content="Refresh" Command="{Binding RefreshModelsCommand}"/>
+                    <Button Content="Delete" Command="{Binding DeleteSelectedModelCommand}" 
+                            IsEnabled="{Binding SelectedModel.IsInstalled, FallbackValue=False}"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+
+        <Separator Grid.Row="1"/>
+
+        <Border Grid.Row="2" Margin="20" Padding="10" 
+                Background="{DynamicResource AppForegroundBrush}" 
+                CornerRadius="5">
+            <ScrollViewer>
+                <TextBlock Text="{Binding TranscriptionText}" 
+                           TextWrapping="Wrap"
+                           FontSize="16"/>
+            </ScrollViewer>
+        </Border>
+    </Grid>
+</UserControl>

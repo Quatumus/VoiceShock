@@ -1,0 +1,114 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:VoiceShock.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:converters="using:VoiceShock.Converters"
+             x:Class="VoiceShock.Views.ShockersView"
+             x:DataType="vm:ShockersViewModel">
+    <Grid RowDefinitions="Auto, Auto, *">
+        <TextBlock Grid.Row="0" 
+                   Text="Shockers" 
+                   FontSize="24" 
+                   FontWeight="Bold" 
+                   Margin="20"/>
+        
+        <Button Grid.Row="1" 
+                Command="{Binding RefreshShockersCommand}"
+                Content="Refresh"
+                HorizontalAlignment="Left"
+                Margin="20,0,20,0"
+                IsEnabled="{Binding !IsLoading}"/>
+        
+        <Separator Grid.Row="2" Margin="20,0"/>
+        
+        <!-- Loading indicator -->
+        <Border Grid.Row="3" 
+                Background="{DynamicResource AppForegroundBrush}" 
+                CornerRadius="5" 
+                Margin="20"
+                Padding="20"
+                IsVisible="{Binding IsLoading}">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Text="Loading shockers..." 
+                           FontSize="16"/>
+            </StackPanel>
+        </Border>
+        
+        <!-- Shockers list -->
+        <ScrollViewer Grid.Row="3" 
+                      Margin="20"
+                      IsVisible="{Binding !IsLoading}">
+            <ItemsControl ItemsSource="{Binding Shockers}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="{DynamicResource AppForegroundBrush}" 
+                                CornerRadius="5" 
+                                Margin="0,0,0,10"
+                                Padding="10">
+                            <Grid RowDefinitions="Auto, Auto">
+                                <TextBlock Grid.Row="0" 
+                                           Text="{Binding Name}" 
+                                           FontWeight="Bold"
+                                           FontSize="16"/>
+                                
+                                <StackPanel Grid.Row="1" 
+                                            Orientation="Horizontal" 
+                                            Spacing="10">
+                                    <TextBlock Text="ID:" 
+                                               FontSize="12" 
+                                               Foreground="Gray"/>
+                                    <TextBlock Text="{Binding ShockerId}" 
+                                               FontSize="12" 
+                                               FontWeight="Bold"/>
+                                </StackPanel>
+                                
+                                <StackPanel Grid.Row="2" 
+                                            Orientation="Horizontal" 
+                                            Spacing="10">
+                                    <TextBlock Text="Status:" 
+                                               FontSize="12" 
+                                               Foreground="Gray"/>
+                                    <TextBlock Text="{Binding IsActive, Converter={StaticResource BooleanToStatusConverter}}" 
+                                               FontSize="12" 
+                                               FontWeight="Bold"/>
+                                </StackPanel>
+                                
+                                <TextBlock Grid.Row="3" 
+                                           Text="{Binding LastActivatedAt, StringFormat='Last active: {0:yyyy-MM-dd HH:mm}'}" 
+                                           FontSize="10" 
+                                               Foreground="Gray"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+        
+        <!-- Toggle buttons -->
+        <ItemsControl Grid.Row="3" 
+                      ItemsSource="{Binding Shockers}"
+                      IsVisible="{Binding !IsLoading}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border Background="{DynamicResource AppForegroundBrush}" 
+                                CornerRadius="5" 
+                                Margin="0,0,0,10"
+                                Padding="10">
+                        <Grid RowDefinitions="Auto, Auto">
+                            <TextBlock Grid.Row="0" 
+                                           Text="{Binding Name}" 
+                                           FontWeight="Bold" 
+                                           FontSize="16"/>
+                            
+                            <ToggleSwitch Grid.Row="1" 
+                                          IsChecked="{Binding IsActive}"
+                                          HorizontalAlignment="Stretch"/>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Grid>
+</UserControl>
