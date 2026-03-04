@@ -16,6 +16,8 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty]
     private bool _isLoggedIn;
 
+    private ControlPanelViewModel? _controlPanelViewModel;
+
     public MainWindowViewModel()
     {
         _currentPage = new LoginViewModel();
@@ -56,7 +58,11 @@ public partial class MainWindowViewModel : ViewModelBase
     [RelayCommand]
     public void NavigateToControlPanel()
     {
-        CurrentPage = new ControlPanelViewModel();
+        if (_controlPanelViewModel == null)
+        {
+            _controlPanelViewModel = new ControlPanelViewModel();
+        }
+        CurrentPage = _controlPanelViewModel;
     }
 
     [RelayCommand]
@@ -88,5 +94,11 @@ public partial class MainWindowViewModel : ViewModelBase
     public void NavigateToShockers()
     {
         CurrentPage = new ShockersViewModel();
+    }
+
+    protected override void OnDispose()
+    {
+        _controlPanelViewModel?.Dispose();
+        base.OnDispose();
     }
 }

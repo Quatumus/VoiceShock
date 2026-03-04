@@ -734,7 +734,7 @@ public partial class ControlPanelViewModel : ViewModelBase
                 // Activate all enabled shockers with word-specific settings
                 foreach (var shockerId in enabledShockerIds)
                 {
-                    await ActivateShocker(shockerId, triggerWord.Duration, triggerWord.Intensity);
+                    await ActivateShocker(shockerId, triggerWord.Duration, triggerWord.Intensity, triggerWord.Text);
                 }
             }
             else
@@ -748,14 +748,14 @@ public partial class ControlPanelViewModel : ViewModelBase
         }
     }
 
-    private async Task ActivateShocker(string shockerId, int duration, int intensity)
+    private async Task ActivateShocker(string shockerId, int duration, int intensity, string triggerWord)
     {
         try
         {
             // Create control request to activate the shocker
             var controlRequest = new ControlRequest
             {
-                CustomName = "VoiceShock Activation",
+                CustomName = $"VoiceShock Activation - Triggered by: {triggerWord}",
                 Shocks = new []
                 {
                     new Control
@@ -772,7 +772,7 @@ public partial class ControlPanelViewModel : ViewModelBase
 
             if (response.IsT0)
             {
-                System.Console.WriteLine($"[DEBUG_LOG] Successfully activated shocker {shockerId} - Duration: {duration}ms, Intensity: {intensity}");
+                System.Console.WriteLine($"[DEBUG_LOG] Successfully activated shocker {shockerId} - Triggered by: {triggerWord} - Duration: {duration}ms, Intensity: {intensity}");
             }
             else if (response.IsT1)
             {
